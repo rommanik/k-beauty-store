@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-Beauty Store</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        html {
+          scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            background: #f8f9fa;
+            color: #222;
+        }
+        header {
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            padding: 0 0 0 0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 24px;
+        }
+        .logo h1 {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            font-size: 2rem;
+            color: #e91e63;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 28px;
+            margin: 0;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: #222;
+            font-weight: 500;
+            font-size: 1.05rem;
+            transition: color 0.2s;
+        }
+        nav ul li a:hover, nav ul li a:focus {
+            color: #e91e63;
+        }
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #e91e63;
+        }
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -12px;
+            background: #e91e63;
+            color: #fff;
+            border-radius: 50%;
+            font-size: 0.85rem;
+            padding: 2px 7px;
+            font-weight: bold;
+        }
+        .hero {
+            background: linear-gradient(90deg, #ffe3ec 0%, #fff 100%);
+            padding: 60px 0 40px 0;
+            text-align: center;
+        }
+        .hero h2 {
+            font-size: 2.5rem;
+            color: #e91e63;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            color: #444;
+            margin-bottom: 0;
+        }
+        .highlight-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 16px;
+            display: flex;
+            gap: 30px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+        }
+
+        .highlight-card {
+            flex: 0 0 auto;
+            scroll-snap-align: start;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 260px;
+            min-height: 360px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 16px;
+            position: relative;
+        }
+
+        .highlight-card:hover {
+            transform: translateX(8px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .highlight-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .highlight-card h3 {
+            font-size: 18px;
+            margin: 12px 0 4px;
+            color: #333;
+        }
+
+        .highlight-card .price {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .highlight-card .badge {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            color: white;
+            background: #e91e63;
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+        }
+        .highlight-card a {
+            outline: none;        
+            text-decoration: none; 
+            color: inherit;       
+            display: block;      
+            }
+
+            .highlight-card a:focus,
+            .highlight-card a:hover {
+            outline: none;        
+            text-decoration: none; 
+            color: inherit;
+            }
+
+        .product-section {
+            max-width: 1200px;
+            margin: 40px auto 0 auto;
+            padding: 0 16px;
+        }
+        .product-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 32px;
+        }
+        .product-card {
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+            padding: 24px 18px 18px 18px;
+            text-align: center;
+            transition: box-shadow 0.2s, transform 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .product-card:hover {
+            box-shadow: 0 8px 32px rgba(233,30,99,0.10);
+            transform: translateY(-4px) scale(1.03);
+        }
+        .product-card img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 18px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .product-card h3 {
+            margin: 0 0 8px 0;
+            font-size: 1.15rem;
+            color: #e91e63;
+            font-weight: 600;
+        }
+        .product-card p {
+            color: #444;
+            font-size: 1rem;
+            margin-bottom: 18px;
+        }
+        .product-card a {
+            display: inline-block;
+            background: #e91e63;
+            color: #fff;
+            padding: 10px 22px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+        .product-card a:hover {
+            background: #ad1457;
+        }
+        .contact {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 16px;
+            background-color: #f9f9f9;
+        }
+
+        .contact form {
+            width: 100%;
+            max-width: 480px;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .contact fieldset {
+            border: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .contact legend {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #e91e63;
+            margin-bottom: 10px;
+        }
+
+        .contact label {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .contact input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .contact button {
+            background-color: #e91e63;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .contact button:hover {
+            background-color: #c2185b;
+        }
+
+
+        footer {
+            background: #fff;
+            color: #888;
+            text-align: center;
+            padding: 24px 0 16px 0;
+            margin-top: 48px;
+            font-size: 1rem;
+            border-top: 1px solid #eee;
+        }
+        footer p {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            line-height: 1.5;
+            
+            
+        }
+        footer p a {
+            color: #e91e63;
+            text-decoration: none;
+            margin-left: 4px;
+        }
+        @media (max-width: 1200px) {
+            .header-content {
+                padding: 0 16px;
+            }
+            .hero h2 {
+                font-size: 2.2rem;
+            }
+            .product-card img {
+                width: 100px;
+                height: 100px;
+            }
+        }
+        @media (max-width: 900px) {
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            nav ul {
+                flex-direction: column;
+                gap: 16px;
+            }
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+            .product-card img {
+                width: 80px;
+                height: 80px;
+            }
+        }
+        @media (max-width: 700px) {
+            .header-content, .product-section {
+                padding: 0 8px;
+            }
+            .hero h2 {
+                font-size: 2rem;
+            }
+            .product-card img {
+                width: 90px;
+                height: 90px;
+            }
+        }
+        @media (max-width: 480px) {
+            .header-content {
+                padding: 0 12px;
+            }
+            .hero h2 {
+                font-size: 1.6rem;
+            }
+            .product-card img {
+                width: 70px;
+                height: 70px;
+            }
+        }
+      
+
+
+    </style>
+</head>
+<body>
+    <header>
+  <div style="display: flex; align-items: center; justify-content: space-between; max-width:1200px; margin:0 auto; padding:18px 24px;">
+    <div class="logo" style="flex-shrink:0;">
+      <h2 style="margin:0; font-size:2rem; color:#e91e63; letter-spacing:2px;">K-Beauty Store</h2>
+    </div>
+    <div style="display: flex; align-items: center; gap: 18px;">
+      
+      <div class="menu-toggle" onclick="toggleMenu()" style="display: flex; flex-direction: column; cursor: pointer;">
+        <span style="width: 26px; height: 3px; background: #e91e63; margin: 4px 0; border-radius: 2px; display: block;"></span>
+        <span style="width: 26px; height: 3px; background: #e91e63; margin: 4px 0; border-radius: 2px; display: block;"></span>
+        <span style="width: 26px; height: 3px; background: #e91e63; margin: 4px 0; border-radius: 2px; display: block;"></span>
+      </div>
+      <div class="cart-icon" style="margin-left:10px;">
+        <a href="thankyou.html" style="color: inherit; text-decoration: none;">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count" id="cartCount">0</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <nav id="mainMenu" style="display: none; flex-direction: column; position: absolute; top: 70px; left: 0; width: 100%; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); z-index: 100;">
+    <ul style="padding: 16px; margin: 0; list-style: none;">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="brand.html">Brands</a></li>
+      <li><a href="mask.html">Masks</a></li>
+      <li><a href="supplement.html">Supplements</a></li>
+      <li><a href="#contact">Contact</a></li>
+
+    </ul>
+  </nav>
+</header>
+            <section class="hero" id="home">
+                <h2>Welcome to K-Beauty Online Shop</h2>
+                <p>Discover amazing skincare at great prices. Shop the best brands in K-Beauty, delivered to your door.</p>
+            </section>
+            <main>
+                <section class="highlight-section">
+            <div class="highlight-card">
+                <a href="brand.html#best-brand">
+                <span class="badge">BEST SELLER</span>
+                <img src="https://crescitebeauty.com/cdn/shop/files/2_0f6845be-2cbf-4c83-a0ff-79346c5e5858.jpg?v=1725723466&width=1400" alt="SKIN1004 Madagascar Centella Poremizing Quick Clay Stick Mask 27g">
+                <h3>Medicube PDRN Pink Peptide Serum 30ml</h3>
+                <p class="price">$22.16</p>
+                </a>
+            </div>
+            <div class="highlight-card">
+                <a href="brand.html#best-brand1">
+                <span class="badge">BEST SELLER</span>
+                <img src="https://cdn11.bigcommerce.com/s-hwo2s3k4l6/images/stencil/1280x1280/products/629/3052/Medicube_Deep_Vita_C_Capsule_Cream_55_g_KBeauty_Australia_-_golden_boba_texture__57912.1733796673.jpg?c=2" alt="">
+                <h3>Medicube Vita Deep C 55mg</h3>
+                <p class="price">$33.95</p>
+                </a>
+            </div>
+
+
+            <div class="highlight-card">
+                <a href="brand.html#best-mask">
+                <span class="badge">BEST SELLER</span>
+                <img src="https://static.sweetcare.com/img/prd/488/v-638543112893884273/skin1004-021409kn-2@2x.webp" alt="SOME BY MI AHA BHA">
+                <h3>SKIN1004 Madagascar Centella Poremizing Quick Clay Stick Mask 27g</h3>
+                <p class="price">$24.12</p>
+                </a>
+            </div>
+            <div class="highlight-card">
+                <a href="brand.html#best-mask1">
+                <span class="badge">BEST SELLER</span>
+                <img src="https://static.sweetcare.com/img/prd/488/v-638803118936367935/medicube-023740mw-1@2x.webp" alt="">
+                <h3>Medicube Zero Pore Blackhead Mud Purifying Face Mask with Clay 100ml</h3>
+                <p class="price">$15.35</p>
+                </a>
+            </div>
+
+            <div class="highlight-card">
+                <a href="supplement.html#best-supplement">
+                <span class="badge">BEST SELLER</span>
+                <img src="https://down-ph.img.susercontent.com/file/ph-11134207-7r991-lstbueds6l38ce" alt="Glutathione + Collagen">
+                <h3>Teddi Lab by Unichi Rose Collogen Gummies X 60 Gummies</h3>
+                <p class="price">$100.00</p>
+                </a>
+            </div>
+            <div class="highlight-card">
+                <a href="supplement.html#best-supplement2">
+                <span class="badge">BEST SELLER</span>
+                <img src="https://curemydisease.us/wp-content/uploads/2025/07/primebiome-supplement-1.webp" alt="Glutathione + Collagen">
+                <h3>Prime Biodema dietary supplement X 30 Gummies</h3>
+                <p class="price">$81.99</p>
+                </a>
+            </div>
+
+        </section>   
+
+        <section class="product-section">
+            <div class="product-list">
+                <div class="product-card">
+                    <img src="https://i.pinimg.com/736x/ac/8e/f0/ac8ef05c177c0e71f8864dd4feefcf5c.jpg" alt="Brand">
+                    <h3>Shop by Brand</h3>
+                    <p>Explore top K-Beauty brands like Anua, COSRX, and more.</p>
+                    <a href="brand.html">Shop Brands</a>
+                </div>
+                <div class="product-card">
+                    <img src="https://th.bing.com/th/id/R.5c713986319517f8714f2eded30fae30?rik=SOZstXg499Wg0w&riu=http%3a%2f%2fmyseoulbox.com%2fcdn%2fshop%2farticles%2fVS_7_c117ed9f-6e4b-48cd-b16a-bd5277352afa.png%3fv%3d1709187803&ehk=k0PV%2bxqhbAQUGW%2fz4AWVXwencVnVuAPgGBQJPRP6WiM%3d&risl=&pid=ImgRaw&r=0" alt="Masks">
+                    <h3>Sheet Masks</h3>
+                    <p>Hydrate and pamper your skin with our best-selling masks.</p>
+                    <a href="mask.html">Shop Masks</a>
+                </div>
+                <div class="product-card">
+                    <img src="https://th.bing.com/th/id/OIP.3N2kO0WD2J7eoI8PtYtdFwHaD4?w=345&h=180&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3" alt="Supplements">
+                    <h3>Supplements</h3>
+                    <p>Beauty from within: discover our curated supplement range.</p>
+                    <a href="supplement.html">Shop Supplements</a>
+                </div>
+                
+            </div>
+        </section>
+        <section class="highlight-section">
+        <section class="contact" id="contact">
+            <form>
+                <fieldset>
+                <a href="#Contact"></a><legend>Contact Us</legend>
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <button type="submit">Submit</button>
+                </fieldset>
+            </form>
+        </section>
+    </div>
+            
+  </div> 
+</section>
+
+    </main>
+    <footer>
+        <p>&copy; 2025 K-Beauty Store.</p>
+    </footer>
+     <script>
+        function toggleMenu() {
+            var menu = document.getElementById('mainMenu');
+            if (menu.style.display === "flex" || menu.style.display === "") {
+                menu.style.display = "none";
+            } else {
+                menu.style.display = "flex";
+                menu.style.flexDirection = "column";
+                menu.style.background = "#fff";
+                menu.style.position = "absolute";
+                menu.style.top = "60px";
+                menu.style.left = "0";
+                menu.style.width = "100%";
+                menu.style.boxShadow = "0 2px 8px rgba(0,0,0,0.08)";
+                menu.style.zIndex = "100";
+            }
+        }
+        function handleResize() {
+            var menu = document.getElementById('mainMenu');
+            if (window.innerWidth > 900) {
+                menu.style.display = "flex";
+                menu.style.flexDirection = "row";
+                menu.style.position = "static";
+                menu.style.background = "none";
+                menu.style.width = "auto";
+                menu.style.boxShadow = "none";
+            } else {
+                menu.style.display = "none";
+            }
+        }
+        window.addEventListener('resize', handleResize);
+        window.addEventListener('DOMContentLoaded', handleResize);
+    </script>
+</body>
+</html>

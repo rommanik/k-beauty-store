@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-Beauty Store</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            background: #f8f9fa;
+            color: #222;
+        }
+        header {
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            padding: 0 0 0 0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 24px;
+        }
+        .logo h1 {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            font-size: 2rem;
+            color: #e91e63;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 28px;
+            margin: 0;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: #222;
+            font-weight: 500;
+            font-size: 1.05rem;
+            transition: color 0.2s;
+        }
+        nav ul li a:hover, nav ul li a:focus {
+            color: #e91e63;
+        }
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #e91e63;
+        }
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -12px;
+            background: #e91e63;
+            color: #fff;
+            border-radius: 50%;
+            font-size: 0.85rem;
+            padding: 2px 7px;
+            font-weight: bold;
+        }
+        .badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: red;
+            color: white;
+            padding: 5px ;
+            border-radius: 5px;
+            z-index: 1;
+        }
+        .product-section {
+            max-width: 1200px;
+            margin: 40px auto 0 auto;
+            padding: 0 16px;
+        }
+        .product-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 32px;
+        }
+        .product-card {
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+            padding: 24px 18px 18px 18px;
+            text-align: center;
+            transition: box-shadow 0.2s, transform 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        .product-card:hover {
+            box-shadow: 0 8px 32px rgba(233,30,99,0.10);
+            transform: translateY(-4px) scale(1.03);
+        }
+        .product-card img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 18px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .product-card h3 {
+            margin: 0 0 8px 0;
+            font-size: 1.15rem;
+            color: #e91e63;
+            font-weight: 600;
+        }
+        .product-card p {
+            color: #444;
+            font-size: 1rem;
+            margin-bottom: 6px; 
+            margin-top: 0;       
+        }
+
+        .p2 {
+            margin: 0;                  
+            text-decoration: line-through;
+            color: #888;                
+            font-size: 0.95rem;         
+        }
+        .product-card a {
+            display: inline-block;
+            background: #e91e63;
+            color: #fff;
+            padding: 10px 22px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+        .product-card a:hover {
+            background: #ad1457;
+        }
+        .add-cart-btn {
+            background: #e91e63;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+        .add-cart-btn:hover { 
+            background: #ad1457; 
+        }
+        footer {
+            background: #fff;
+            color: #888;
+            text-align: center;
+            padding: 24px 0 16px 0;
+            margin-top: 48px;
+            font-size: 1rem;
+            border-top: 1px solid #eee;
+        }
+        footer p {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            line-height: 1.5;
+            
+        }
+        footer p a {
+            color: #e91e63;
+            text-decoration: none;
+            margin-left: 4px;
+        }
+        @media (max-width: 1200px) {
+            .header-content {
+                padding: 0 16px;
+            }
+            .hero h2 {
+                font-size: 2.2rem;
+            }
+            .product-card img {
+                width: 100px;
+                height: 100px;
+            }
+        }
+        @media (max-width: 900px) {
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            nav ul {
+                flex-direction: column;
+                gap: 16px;
+            }
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+            .product-card img {
+                width: 80px;
+                height: 80px;
+            }
+        }
+        @media (max-width: 700px) {
+            .header-content, .product-section {
+                padding: 0 8px;
+            }
+            .hero h2 {
+                font-size: 2rem;
+            }
+            .product-card img {
+                width: 90px;
+                height: 90px;
+            }
+        }
+        @media (max-width: 480px) {
+            .header-content {
+                padding: 0 12px;
+            }
+            .hero h2 {
+                font-size: 1.6rem;
+            }
+            .product-card img {
+                width: 70px;
+                height: 70px;
+            }
+        }
+      
+
+
+    </style>
+</head>
+<body>
+    <header>
+  <div style="display: flex; align-items: center; justify-content: space-between; max-width:1200px; margin:0 auto; padding:18px 24px;">
+    <div class="logo" style="flex-shrink:0;">
+      <h2 style="margin:0; font-size:2rem; color:#e91e63; letter-spacing:2px;">K-Beauty Store-brands</h2>
+    </div>
+    <div style="display: flex; align-items: center; gap: 18px;">
+      
+      <div class="menu-toggle" onclick="toggleMenu()" style="display: flex; flex-direction: column; cursor: pointer;">
+        <span style="width: 26px; height: 3px; background: #e91e63; margin: 4px 0; border-radius: 2px; display: block;"></span>
+        <span style="width: 26px; height: 3px; background: #e91e63; margin: 4px 0; border-radius: 2px; display: block;"></span>
+        <span style="width: 26px; height: 3px; background: #e91e63; margin: 4px 0; border-radius: 2px; display: block;"></span>
+      </div>
+      <div class="cart-icon" style="margin-left:10px;">
+        <a href="thankyou.html" style="color: inherit; text-decoration: none;">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count" id="cartCount">0</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <nav id="mainMenu" style="display: none; flex-direction: column; position: absolute; top: 70px; left: 0; width: 100%; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); z-index: 100;">
+    <ul style="padding: 16px; margin: 0; list-style: none;">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="brand.html">Brands</a></li>
+      <li><a href="mask.html">Masks</a></li>
+      <li><a href="supplement.html">Supplements</a></li>
+      <li><a href="#contact" onclick="showcontact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+    <main>
+        
+        <section class="product-section">
+            <div class="product-list">
+                <div class="product-card">
+                    <Span class="badge">-10%</span>
+                    <h3>Medicube</h3>
+                    <img src="https://tse3.mm.bing.net/th/id/OIP.zJ7Z0ST6JQaF1AmiPWRWtAHaGy?rs=1&pid=ImgDetMain&o=7&rm=3" alt="">
+                    <h3>PDRN Pink Collagen Capsule Cream  55ml</h3>
+                    <p>Revitalize your skin with this innovative cream that combines the power of PDRN and collagen for a youthful glow.</p>
+                    <p class="p2">$34.00</p>
+                    <p>$30.60</p>
+                    <form action="thankyou.html" method="get">
+                    <label for="qtyX">Qty:</label>
+                    <input type="number" id="qtyX" name="qty" value="-" min="0" max="100" style="width:50px;"><br>
+                    <input type="hidden" name="product" value="Medicube PDRN Pink Collagen Capsule Cream">
+                    <input type="hidden" name="price" value="34.00">
+                    <button class="add-cart-btn" type="submit" style="margin-top:10px;">Add to Cart</button>
+                </form>
+                </div>
+                <div class="product-card">
+                    <h3>Medicube</h3>
+                    <img src="https://www.nail-kits.com/wp-content/uploads/2024/12/medicube-red-erasing-cream-50ml-190927.jpg" alt="">
+                    <h3>Red Erasing Cream 50ml</h3>
+                    <p>Target redness and irritation with this soothing cream that calms and heals sensitive skin.</p>
+                    <p>$25.00</p>
+                    <form action="thankyou.html" method="get">
+                    <label for="qtyY">Qty:</label>
+                    <input type="number" id="qtyY" name="qty" value="-" min="0" max="100" style="width:50px;"><br>
+                    <input type="hidden" name="product" value="Medicube Red Erasing Cream">
+                    <input type="hidden" name="price" value="25.00">
+                    <button class="add-cart-btn" type="submit" style="margin-top:10px;">Add to Cart</button>
+                    </form>
+                </div>
+                <div class="product-card">
+                    <h3>Medicube</h3>
+                    <img src="https://m.media-amazon.com/images/S/aplus-media-library-service-media/18a9f559-55da-416d-a2a3-9513dc93b978.__CR370,1170,3703,3703_PT0_SX300_V1___.jpg" alt="">
+                    <h3>Red Foam Cleanser 150ml</h3>
+                    <p>Gently cleanse and purify your skin with this foam cleanser that removes impurities without stripping moisture.</p>
+                    <p>$20.00</p>
+                    <form action="thankyou.html" method="get">
+                    <label for="qtyZ">Qty:</label>
+                    <input type="number" id="qtyZ" name="qty" value="-" min="0" max="100" style="width:50px;"><br>
+                    <input type="hidden" name="product" value="Medicube Red Foam Cleanser">
+                    <input type="hidden" name="price" value="20.00">
+                    <button class="add-cart-btn" type="submit" style="margin-top:10px;">Add to Cart</button>
+                    </form>
+                </div>
+                <div class="product-card" id="best-brand">
+                    <span class="badge">Best</span>
+                    <h3>Medicube</h3>
+                    <img src="https://crescitebeauty.com/cdn/shop/files/2_0f6845be-2cbf-4c83-a0ff-79346c5e5858.jpg?v=1725723466&width=1400" alt="">
+                    <h3>Medicube PDRN Pink Peptide Serum 30ml</h3>
+                    <p> Formulated with 10,000 ppm Salmon PDRN, this serum closely mimics human skin structure, helping to restore firmness and improve skin resilience in just two weeks.</p>
+                    <p>$22.61</p>
+                    <form action="thankyou.html" method="get">
+                    <label for="qtyA">Qty:</label>
+                    <input type="number" id="qtyA" name="qty" value="-" min="0" max="100" style="width:50px;"><br>
+                    <input type="hidden" name="product" value="Medicube PDRN Pink Peptide Serum 30ml">
+                    <input type="hidden" name="price" value="22.61">
+                    <button class="add-cart-btn" type="submit" style="margin-top:10px;">Add to Cart</button>
+                    </form>
+                </div>
+                <div class="product-card" id="best-brand1">
+                    <span class="badge">Best</span>
+                    <h3>Medicube</h3>
+                    <img src="https://cdn11.bigcommerce.com/s-hwo2s3k4l6/images/stencil/1280x1280/products/629/3052/Medicube_Deep_Vita_C_Capsule_Cream_55_g_KBeauty_Australia_-_golden_boba_texture__57912.1733796673.jpg?c=2" alt="">
+                    <h3>Deep Vita C Capsule Cream 55g</h3>
+                    <p>Brighten and even out your skin tone with this vitamin C-infused cream that hydrates and revitalizes dull skin.</p>
+                    <p>$33.95</p>
+                    <form action="thankyou.html" method="get">
+                    <label for="qtyB">Qty:</label>
+                    <input type="number" id="qtyB" name="qty" value="-" min="0" max="100" style="width:50px;"><br>
+                    <input type="hidden" name="product" value="Medicube Deep Vita C Capsule Cream 55g">
+                    <input type="hidden" name="price" value="33.95">
+                    <button class="add-cart-btn" type="submit" style="margin-top:10px;">Add to Cart</button>
+                    </form>
+                </div>
+                <div class="product-card">
+                    <h3>Medicube</h3>
+                    <img src="https://cdn11.bigcommerce.com/s-hwo2s3k4l6/images/stencil/640w/products/720/4027/1__59345.1747636188.png?c=2" alt="">
+                    <h3>Medicube PDRN Pink Cica Soothing Toner 250ml</h3>
+                    <p>Calm and soothe irritated skin with this toner enriched with PDRN and cica, perfect for sensitive skin types.</p>
+                    <p>$29.95</p>
+                    <form action="thankyou.html" method="get">
+                    <label for="qtyC">Qty:</label>
+                    <input type="number" id="qtyC" name="qty" value="-" min="0" max="100" style="width:50px;"><br>
+                    <input type="hidden" name="product" value="Medicube PDRN Pink Cica Soothing Toner 250ml">
+                    <input type="hidden" name="price" value="29.95">
+                    <button class="add-cart-btn" type="submit" style="margin-top:10px;">Add to Cart</button>
+                    </form>
+                </div>
+                <div class="product-card">
+                    <h3>Medicube</h3>
+                    <img src="https://luxiface.com/cdn/shop/files/medicube-pdrn-pink-collagen-exosome-shot-ampoule-2000-30ml-2_1800x1800.jpg?v=1738821196" alt="">
+                    <h3>PDRN Pink Collagen Exosome Shot 2000 30ml</h3>
+                    <p>Experience the power of exosomes with this ampoule that enhances skin elasticity and hydration for a youthful appearance.</p>
+                    <p>$39.00</p>
+                    <form action="thankyou.html" method="get">
+                    <label for="qtyD">Qty:</label>
+                    <input type="number" id="qtyD" name="qty" value="-" min="0" max="100" style="width:50px;"><br>
+                    <input type="hidden" name="product" value="Medicube PDRN Pink Collagen Exosome Shot 2000 30ml">
+                    <input type="hidden" name="price" value="39.00">
+                    <button class="add-cart-btn" type="submit" style="margin-top:10px;">Add to Cart</button>
+                    </form>
+                </div>
+                <div class="product-card">
+                    <h3>Round lab</h3>
+                    <img src="https://images.squarespace-cdn.com/content/v1/6296f3e6c0f69e7dd46d9076/1678283988684-CCFG0WQ82NRR97TPO2T2/round-lab-1025-dokdo-toner-200ml-14164595802178.jpeg?format=1000w" alt="">
+                    <h3>ROUND LAB 1025 Dokdo Toner 6.76 Fl Oz</h3>
+                    <p>Hydrate and balance your skin with this toner that contains mineral-rich water from the Dokdo Islands, perfect for daily use.</p>
+                    <p>$15.00</p>
+                    <form action="thankyou.html" method="get">
+                    <label for="qtyE">Qty:</label>
+                    <input type="number" id="qtyE" name="qty" value="-" min="0" max="100" style="width:50px;"><br>
+                    <input type="hidden" name="product" value="ROUND LAB 1025 Dokdo Toner 6.76 Fl Oz">
+                    <input type="hidden" name="price" value="15.00">
+                    <button class="add-cart-btn" type="submit" style="margin-top:10px;">Add to Cart</button>
+                    </form>
+                </div>
+                <div class="product-card">
+                    <span class="badge">Best</span>
+                    <h3>Round lab</h3>
+                    <img src="https://tse4.mm.bing.net/th/id/OIP.v_NYH0OwqBfIJmYh8Wi5WQHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="">
+                    <h3>ROUND LAB SunCream 45ml</h3>
+                    <p>Protect your skin from harmful UV rays with this lightweight sunscreen that provides broad-spectrum protection without leaving a greasy residue.</p>
+                    <p>$18.00</p>
+                    <form action="thankyou.html" method="get">
+                    <label for="qtyF">Qty:</label>
+                    <input type="number" id="qtyF" name="qty" value="-" min="0" max="100" style="width:50px;"><br>
+                    <input type="hidden" name="product" value="ROUND LAB SunCream 45ml">
+                    <input type="hidden" name="price" value="18.00">
+                    <button class="add-cart-btn" type="submit" style="margin-top:10px;">Add to Cart</button>
+                    </form>
+                </div>
+                <div class="product-card">
+                    <h3>Round lab</h3>
+                    <img src="https://tse2.mm.bing.net/th/id/OIP.7C3zn2KctMQwJQ92sMaF3gHaJQ?pid=ImgDet&w=178&h=222&c=7&dpr=1.3&o=7&rm=3" alt="">
+                    <h3>ROUND LAB 1025 Dokdo Cream</h3>
+                    <p>Moisturize and nourish your skin with this cream that provides long-lasting hydration and helps maintain the skin's natural barrier.</p>
+                    <p>$22.00</p>
+                    <form action="thankyou.html" method="get">
+                    <label for="qtyG">Qty:</label>
+                    <input type="number" id="qtyG" name="qty" value="-" min="0" max="100" style="width:50px;"><br>
+                    <input type="hidden" name="product" value="ROUND LAB 1025 Dokdo Cream">
+                    <input type="hidden" name="price" value="22.00">
+                    <button class="add-cart-btn" type="submit" style="margin-top:10px;">Add to Cart</button>
+                    </form>
+                </div>
+                <div class="product-card">
+                    <h3>Round lab</h3>
+                    <img src="https://th.bing.com/th/id/R.95ecb38a7bfa579c62c6149fb3f36871?rik=Mz%2fkzq5%2fcjeq2A&riu=http%3a%2f%2fopenthebeauty.com%2fcdn%2fshop%2ffiles%2fRoundLab1025DokdoDualEssence_grande.png%3fv%3d1684225147&ehk=r%2fbrXrlFsm5jTvRmYmEA0ZRC55hCKBpP%2bCSlqaIY4S4%3d&risl=&pid=ImgRaw&r=0" alt="">
+                    <h3>ROUND LAB 1025 Dokdo Essence 150ml</h3>
+                    <p>Enhance your skin's texture and radiance with this essence that delivers deep hydration and revitalizes dull skin.</p>
+                    <p>$28.00</p>
+                    <form action="thankyou.html" method="get">
+                    <label for="qtyH">Qty:</label>
+                    <input type="number" id="qtyH" name="qty" value="-" min="0" max="100" style="width:50px;"><br>
+                    <input type="hidden" name="product" value="ROUND LAB 1025 Dokdo Essence 150ml">
+                    <input type="hidden" name="price" value="28.00">
+                    <button class="add-cart-btn" type="submit" style="margin-top:10px;">Add to Cart</button>
+                    </form>
+                </div>
+                <div class="product-card">
+                    <span class="badge">Best</span>
+                    <h3>Skin1004</h3>
+                    <img src="https://th.bing.com/th/id/OIP.B72XZLl1nTMsvtn3P_LgDwHaHa?w=199&h=199&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3" alt="">
+                    <h3>Skin1004 Madagascar Centella Ampoule 100ml</h3>
+                    <p>Soothing and hydrating ampoule enriched with centella asiatica extract from Madagascar, perfect for calming irritated skin.</p>
+                    <p>$25.00</p>
+                    <form action="thankyou.html" method="get">
+                    <label for="qtyI">Qty:</label>
+                    <input type="number" id="qtyI" name="qty" value="-" min="0" max="100" style="width:50px;"><br>
+                    <input type="hidden" name="product" value="Skin1004 Madagascar Centella Ampoule 100ml">
+                    <input type="hidden" name="price" value="25.00">
+                    <button class="add-cart-btn" type="submit" style="margin-top:10px;">Add to Cart</button>
+                    </form>
+                </div>
+                <div class="product-card">
+                    <h3>Skin1004</h3>
+                    <img src="https://assets.beautyhub.co.ke/wp-content/uploads/2023/07/04145837/skin1004-centella-soothing-cream-75ml-1.jpg" alt="">
+                    <h3>SKIN 1004 Madagascar Centella Cream 75ml</h3>
+                    <p>A light cream with Panthenol and TECA soothes, moisturizes, and nourishes the skin.</p>
+                    <p>$20.00</p>
+                    <form action="thankyou.html" method="get">
+                    <label for="qtyJ">Qty:</label>
+                    <input type="number" id="qtyJ" name="qty" value="-" min="0" max="100" style="width:50px;"><br>
+                    <input type="hidden" name="product" value="SKIN 1004 Madagascar Centella Cream 75ml">
+                    <input type="hidden" name="price" value="20.00">
+                    <button class="add-cart-btn" type="submit" style="margin-top:10px;">Add to Cart</button>
+                    </form>
+                </div>
+                <div class="product-card">
+                    <h3>Skin1004</h3>
+                    <img src="https://www.skin1004.com/cdn/shop/products/skin1004-mask-pad-hyalu-cica-sleeping-pack-38609092608246_1440x.jpg?v=1677149448" alt="">
+                    <h3>Hyalu-Cica Sleeping Pack 100ml</h3>
+                    <p>A lightweight gel sleeping mask with 5 Hyaluronic acids and Melatonin calms and moisturizes the skin overnight.</p>
+                    <p>$15.20</p>
+                    <form action="thankyou.html" method="get">
+                    <label for="qtyK">Qty:</label>
+                    <input type="number" id="qtyK" name="qty" value="-" min="0" max="100" style="width:50px;"><br>
+                    <input type="hidden" name="product" value="Hyalu-Cica Sleeping Pack 100ml">
+                    <input type="hidden" name="price" value="15.20">
+                    <button class="add-cart-btn" type="submit" style="margin-top:10px;">Add to Cart</button>
+                    </form>
+
+                </div>
+
+                <div class="product-card">
+                    <span class="badge">Best</span>
+                    <h3>Dr. Jart+</h3>
+                    <img src="https://tse2.mm.bing.net/th/id/OIP.J6k-8cX_3OU_fcnNO-FfMAHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="">
+                    <h3>Dr. Jart+ Cicapair Tiger Grass Re.Pair Serum 50ml</h3>
+                    <p>Repair and strengthen your skin barrier with this serum that contains tiger grass extract, known for its soothing and healing properties.</p>
+                    <p>$42.00</p>
+                    <form action="thankyou.html" method="get">
+                    <label for="qtyJ">Qty:</label>
+                    <input type="number" id="qtyJ" name="qty" value="-" min="0" max="100" style="width:50px;"><br>
+                    <input type="hidden" name="product" value="Dr. Jart+ Cicapair Tiger Grass Re.Pair Serum 50ml">
+                    <input type="hidden" name="price" value="42.00">
+                    <button class="add-cart-btn" type="submit" style="margin-top:10px;">Add to Cart</button>
+                    </form>
+                </div>
+                <div class="product-card">
+                    <h3>Dr. Jart+</h3>
+                    <img src="https://i.pinimg.com/originals/59/20/5b/59205b4adbdd918691d80f20d857999a.jpg" alt="">
+                    <h3>Dr. Jart+ Cicapair Tiger Grass Color Correcting Treatment 50ml</h3>
+                    <p>Color-correcting treatment that helps to reduce the appearance of redness and discoloration while providing hydration and protection.</p>
+                    <p>$45.00</p>
+                    <form action="thankyou.html" method="get">
+                    <label for="qtyJ">Qty:</label>
+                    <input type="number" id="qtyJ" name="qty" value="-" min="0" max="100" style="width:50px;"><br>
+                    <input type="hidden" name="product" value="Dr. Jart+ Cicapair Tiger Grass Color Correcting Treatment 50ml">
+                    <input type="hidden" name="price" value="45.00">
+                    <button class="add-cart-btn" type="submit" style="margin-top:10px ;">Add to Cart</button>
+                    </form>
+                </div>
+
+
+
+      
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 K-Beauty Store.</p>
+    </footer>
+     <script>
+        function toggleMenu() {
+            var menu = document.getElementById('mainMenu');
+            if (menu.style.display === "flex" || menu.style.display === "") {
+                menu.style.display = "none";
+            } else {
+                menu.style.display = "flex";
+                menu.style.flexDirection = "column";
+                menu.style.background = "#fff";
+                menu.style.position = "absolute";
+                menu.style.top = "60px";
+                menu.style.left = "0";
+                menu.style.width = "100%";
+                menu.style.boxShadow = "0 2px 8px rgba(0,0,0,0.08)";
+                menu.style.zIndex = "100";
+            }
+        }
+        function handleResize() {
+            var menu = document.getElementById('mainMenu');
+            if (window.innerWidth > 900) {
+                menu.style.display = "flex";
+                menu.style.flexDirection = "row";
+                menu.style.position = "static";
+                menu.style.background = "none";
+                menu.style.width = "auto";
+                menu.style.boxShadow = "none";
+            } else {
+                menu.style.display = "none";
+            }
+        }
+        window.addEventListener('resize', handleResize);
+        window.addEventListener('DOMContentLoaded', handleResize);
+    </script>
+</body>
+</html>
