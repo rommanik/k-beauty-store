@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-Beauty Store</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            background: #f8f9fa;
+            color: #222;
+        }
+        header {
+            background: #fff;
+            position: sticky ;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            z-index: 10;
+        }
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 24px;
+        }
+        .logo h1 {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            font-size: 2rem;
+            color: #e91e63;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 28px;
+            margin: 0;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: #222;
+            font-weight: 500;
+            font-size: 1.05rem;
+            transition: color 0.2s;
+        }
+        nav ul li a:hover, nav ul li a:focus {
+            color: #e91e63;
+        }
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #e91e63;
+        }
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -12px;
+            background: #e91e63;
+            color: #fff;
+            border-radius: 50%;
+            font-size: 0.85rem;
+            padding: 2px 7px;
+            font-weight: bold;
+        }
+        .badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: red;
+            color: white;
+            padding: 5px ;
+            border-radius: 5px;
+            z-index: 1;
+        }
+        .product-section {
+            max-width: 1200px;
+            margin: 40px auto 0 auto;
+            padding: 0 16px;
+        }
+        .product-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 32px;
+        }
+        .product-card {
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+            padding: 24px 18px 18px 18px;
+            text-align: center;
+            transition: box-shadow 0.2s, transform 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        .product-card:hover {
+            box-shadow: 0 8px 32px rgba(233,30,99,0.10);
+            transform: translateY(-4px) scale(1.03);
+        }
+        .product-card img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 18px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .product-card h3 {
+            margin: 0 0 8px 0;
+            font-size: 1.15rem;
+            color: #e91e63;
+            font-weight: 600;
+        }
+        .product-card p {
+            color: #444;
+            font-size: 1rem;
+            margin-bottom: 6px; 
+            margin-top: 0;       
+        }
+
+        .p2 {
+            margin: 0;                  
+            text-decoration: line-through;
+            color: #888;                
+            font-size: 0.95rem;         
+        }
+        .product-card a {
+            display: inline-block;
+            background: #e91e63;
+            color: #fff;
+            padding: 10px 22px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+        .product-card a:hover {
+            background: #ad1457;
+        }
+        .add-cart-btn {
+            background: #e91e63;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+        .add-cart-btn:hover { 
+            background: #ad1457; 
+        }
+        footer {
+            background: #fff;
+            color: #888;
+            text-align: center;
+            padding: 24px 0 16px 0;
+            margin-top: 48px;
+            font-size: 1rem;
+            border-top: 1px solid #eee;
+        }
+        footer p {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            line-height: 1.5;
+            
+        }
+        footer p a {
+            color: #e91e63;
+            text-decoration: none;
+            margin-left: 4px;
+        }
+        @media (max-width: 1200px) {
+            .header-content {
+                padding: 0 16px;
+            }
+            .hero h2 {
+                font-size: 2.2rem;
+            }
+            .product-card img {
+                width: 100px;
+                height: 100px;
+            }
+        }
+        @media (max-width: 900px) {
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            nav ul {
+                flex-direction: column;
+                gap: 16px;
+            }
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+            .product-card img {
+                width: 80px;
+                height: 80px;
+            }
+        }
+        @media (max-width: 700px) {
+            .header-content, .product-section {
+                padding: 0 8px;
+            }
+            .hero h2 {
+                font-size: 2rem;
+            }
+            .product-card img {
+                width: 90px;
+                height: 90px;
+            }
+        }
+        @media (max-width: 480px) {
+            .header-content {
+                padding: 0 12px;
+            }
+            .hero h2 {
+                font-size: 1.6rem;
+            }
+            .product-card img {
+                width: 70px;
+                height: 70px;
+            }
+        }
+      
+
+
+    </style>
+</head>
+<body>
+    <header>
+  <div style="display: flex; align-items: center; justify-content: space-between; max-width:1200px; margin:0 auto; padding:18px 24px;">
+    <div class="logo" style="flex-shrink:0;">
+      <h2 style="margin:0; font-size:2rem; color:#e91e63; letter-spacing:2px;">K-Beauty Store</h2>
+    </div>
+    <div style="display: flex; align-items: center; gap: 18px;">
+      
+      <div class="menu-toggle" onclick="toggleMenu()" style="display: flex; flex-direction: column; cursor: pointer;">
+        <span style="width: 26px; height: 3px; background: #e91e63; margin: 4px 0; border-radius: 2px; display: block;"></span>
+        <span style="width: 26px; height: 3px; background: #e91e63; margin: 4px 0; border-radius: 2px; display: block;"></span>
+        <span style="width: 26px; height: 3px; background: #e91e63; margin: 4px 0; border-radius: 2px; display: block;"></span>
+      </div>
+      <div class="cart-icon" style="margin-left:10px;">
+        <a href="thankyou.html" style="color: inherit; text-decoration: none;">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count" id="cartCount">0</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <nav id="mainMenu" style="display: none; flex-direction: column; position: absolute; top: 70px; left: 0; width: 100%; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); z-index: 100;">
+    <ul style="padding: 16px; margin: 0; list-style: none;">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="brand.html">Brands</a></li>
+      <li><a href="mask.html">Masks</a></li>
+      <li><a href="supplement.html">Supplements</a></li>
+      <li><a href="#contact" onclick="showcontact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+    <main>
+        <section class="product-section">
+            <div class="product-list">
+                <div class="product-card">
+                <span class="badge">-50%</span>
+                <h3>INNISFREE</h3>
+                <img src="https://m.media-amazon.com/images/I/41A46sGvilL.jpg" alt="clay mask">
+                <h3>Innisfree Super Volcanic Pore Clay Mask </h3>
+                <p class="p2">$34.99</p>
+                <p>$17.49</p>
+                <form action="thankyou.html" method="get">
+                    <label for="qtyX">Qty:</label>
+                    <input type="number" id="qtyX" name="qty" value="-" min="0" max="100" style="width:50px;"><br>
+                    <input type="hidden" name="product" value="Innisfree Super Volcanic Pore Clay Mask">
+                    <input type="hidden" name="price" value="34.00">
+                    <button class="add-cart-btn" type="submit" style="margin-top:10px;">Add to Cart</button>
+                </form>
+                </div>
+                <div class="product-card">
+                <h3>INNISFREE</h3>
+                <img src="https://tse1.mm.bing.net/th/id/OIP.LCxUyP4UwaeDNqleaaltNQAAAA?w=460&h=460&rs=1&pid=ImgDetMain&o=7&rm=3" alt="green tea mask">
+                <h3>Innisfree Green Tea Sheet Mask</h3>
+                <p>$5.00</p>
+                <form action="thankyou.html" method="get">
+                    <label for="qtyZ">Qty:</label>
+                    <input type="number" id="qtyZ" name="qty" value="-" min="0" max="100" style="width:50px;"><br>
+                    <input type="hidden" name="product" value="Innisfree Green Tea Sheet Mask">
+                    <input type="hidden" name="price" value="5.00">
+                    <button class="add-cart-btn" type="submit" style="margin-top:10px;">Add to Cart</button>
+                </form>
+                </div>
+                <div class="product-card" id="best-mask">
+                <span class="badge">Best</span>
+                <h3>INNISFREE</h3>
+                <img src="https://tse2.mm.bing.net/th/id/OIP.A_plQd3qGjGcgvshn-p0sQAAAA?w=426&h=463&rs=1&pid=ImgDetMain&o=7&rm=3" alt="jeju volcanic mask">
+                <h3>Innisfree Skin Clinic Madecassoside Ingredient</h3>
+                <p>$7.99</p>
+                <form action="thankyou.html" method="get">
+                    <label for="qtyA">Qty:</label>
+                    <input type="number" id="qtyA" name="qty" value="-" min="0" max="100" style="width:50px;"><br>
+                    <input type="hidden" name="product" value="Innisfree Skin Clinic Madecassoside Ingredient">
+                    <input type="hidden" name="price" value="7.99">
+                    <button class="add-cart-btn" type="submit" style="margin-top:10px;">Add to Cart</button>
+                </form>
+                </div>
+                <div class="product-card">
+                <h3>INNISFREE</h3>
+                <img src="https://cdn.tirabeauty.com/v2/billowing-snowflake-434234/tira-p/wrkr/products/pictures/item/free/original/1131546/G_I9sS6DNZ-1131546-1.jpg" alt="vitaminc mask">
+                <h3>Innisfree Vitamin C Mask</h3>
+                <p>$4.00</p>
+                <form action="thankyou.html" method="get">
+                    <label for="qtyB">Qty:</label>
+                    <input type="number" id="qtyB" name="qty" value="-" min="0" max="100" style="width:50px;"><br>
+                    <input type="hidden" name="product" value="Innisfree Vitamin C Mask">
+                    <input type="hidden" name="price" value="4.00">
+                    <button class="add-cart-btn" type="submit" style="margin-top:10px;">Add to Cart</button>
+                </form>
+                </div>
+                <div class="product-card">
+                <span class="badge">-10%</span>
+                <h3>LANEIGE</h3>
+                <img src="https://tse3.mm.bing.net/th/id/OIP.QKA-G_Z9Xboe-ui1Z2EsdgHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="water sleeping mask">
+                <h3>Laneige Water Sleeping Mask</h3>
+                <p class="p2">$39.99</p>
+                <p>$35.99</p>
+                <form action="thankyou.html" method="get">
+                    <label for="qtyY">Qty:</label>
+                    <input type="number" id="qtyY" name="qty" value="-" min="0" max="100" style="width:50px;"><br>
+                    <input type="hidden" name="product" value="Laneige Water Sleeping Mask">
+                    <input type="hidden" name="price" value="30.00">
+                    <button class="add-cart-btn" type="submit" style="margin-top:10px;">Add to Cart</button>
+                </form>
+                </div>
+                <div class="product-card">
+                    <h3>LANEIGE</h3>
+                    <img src="data:image/webp;base64,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" alt="lip sleeping mask">
+                    <h3>Laneige Lip Sleeping Mask</h3>
+                    <p>$20.00</p>
+                    <form action="thankyou.html" method="get">
+                        <label for="qtyC">Qty:</label>
+                        <input type="number" id="qtyC" name="qty" value="-" min="0" max="100" style="width:50px;"><br>
+                        <input type="hidden" name="product" value="Laneige Lip Sleeping Mask">
+                        <input type="hidden" name="price" value="20.00">
+                        <button class="add-cart-btn" type="submit" style="margin-top:10px;">Add to Cart</button>
+                    </form>
+                </div>
+                <div class="product-card">
+                    <span class="badge">Best</span>
+                    <h3>LANEIGE</h3>
+                    <img src="https://tse3.mm.bing.net/th/id/OIP.MJ_IFwzcew19bs2H2EsGlgHaHa?pid=ImgDet&w=474&h=474&rs=1&o=7&rm=3" alt="water bank moisture cream">
+                    <h3>Laneige Water Bank Moisture Cream</h3>
+                    <p>$35.00</p>
+                    <form action="thankyou.html" method="get">
+                        <label for="qtyD">Qty:</label>
+                        <input type="number" id="qtyD" name="qty" value="-" min="0" max="100" style="width:50px;"><br>
+                        <input type="hidden" name="product" value="Laneige Water Bank Moisture Cream">
+                        <input type="hidden" name="price" value="35.00">
+                        <button class="add-cart-btn" type="submit" style="margin-top:10px;">Add to Cart</button>
+                    </form>
+                </div> 
+                <div class="product-card">
+                    <span class="badge">-50%</span>
+                    <h3>Beauty of Joseon </h3>
+                    <img src="https://tse3.mm.bing.net/th/id/OIP.xcGGod7LZThKuE1AvMJ6DAHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" alt="">
+                    <h3>Beauty of Joseon Ground Rice and Honey Glow Mask 150ml</h3>
+                    <p class="p2">$23.72</p>
+                    <p>$11.86</p>
+                    <form action="thankyou.html" method="get">
+                        <label for="qtyE">Qty:</label>
+                        <input type="number" id="qtyE" name="qty" value="-" min="0" max="100" style="width:50px;"><br>
+                        <input type="hidden" name="product" value="Beauty of Joseon Ground Rice and Honey Glow Mask 150ml">
+                        <input type="hidden" name="price" value="23.72">
+                        <button class="add-cart-btn" type="submit" style="margin-top:10px;">Add to Cart</button>
+                    </form>
+                </div>
+                <div class="product-card">
+                    <span class="badge">Best</span>
+                    <h3>Beauty of Joseon </h3>
+                    <img src="https://static.sweetcare.com/img/prd/488/v-638265886208698586/beauty-of-joseon-017863bj-1@2x.webp" alt="">
+                    <h3>Beauty of Joseon Red Bean Refreshing Pore Mask - for Acne Prone Skin 140ml</h3>
+                    <p>$20.00</p>
+                    <form action="thankyou.html" method="get">
+                        <label for="qtyF">Qty:</label>
+                        <input type="number" id="qtyF" name="qty" value="-" min="0" max="100" style="width:50px;"><br>
+                        <input type="hidden" name="product" value="Beauty of Joseon Red Bean Refreshing Pore Mask - for Acne Prone Skin 140ml">
+                        <input type="hidden" name="price" value="20.00">
+                        <button class="add-cart-btn" type="submit" style="margin-top:10px;">Add to Cart</button>
+                    </form>           
+                </div>
+                <div class="product-card" id="best-mask">
+                    <span class="badge">Best</span>
+                    <h3>Skin1004</h3>
+                    <img src="https://static.sweetcare.com/img/prd/488/v-638543112893884273/skin1004-021409kn-2@2x.webp" alt="">
+                    <h3>SKIN1004 Madagascar Centella Poremizing Quick Clay Stick Mask 27g</h3>
+                    <p>$24.12</p>
+                    <form action="thankyou.html" method="get">
+                        <label for="qtyG">Qty:</label>
+                        <input type="number" id="qtyG" name="qty" value="-" min="0" max="100" style="width:50px;"><br>
+                        <input type="hidden" name="product" value="SKIN1004 Madagascar Centella Poremizing Quick Clay Stick Mask 27g">
+                        <input type="hidden" name="price" value="24.12">
+                        <button class="add-cart-btn" type="submit" style="margin-top:10px;">Add to Cart</button>
+                    </form>
+                </div>
+                <div class="product-card">
+                    <span class="badge">-50%</span>
+                    <h3>Medicube</h3>
+                    <img src="https://static.sweetcare.com/img/prd/488/v-638799000217418451/medicube-023694mw-1@2x.webp" alt="">
+                    <h3>Medicube Collagen Night Wrapping Peel Off Firming Night Mask 75ml</h3>
+                    <p class="p2">$36.99</p>
+                    <p>$18.49</p>
+                    <form action="thankyou.html" method="get">
+                        <label for="qtyH">Qty:</label>
+                        <input type="number" id="qtyH" name="qty" value="-" min="0" max="100" style="width:50px;"><br>
+                        <input type="hidden" name="product" value="Medicube Collagen Night Wrapping Peel Off Firming Night Mask 75ml">
+                        <input type="hidden" name="price" value="25.35">
+                        <button class="add-cart-btn" type="submit" style="margin-top:10px;">Add to Cart</button>
+                    </form>
+                </div>
+                <div class="product-card" id="best-mask1">
+                    <span class="badge">Best</span>
+                    <h3>Medicube</h3>
+                    <img src="https://static.sweetcare.com/img/prd/488/v-638803118936367935/medicube-023740mw-1@2x.webp" alt="">
+                    <h3>Medicube Zero Pore Blackhead Mud Purifying Face Mask with Clay 100ml</h3>
+                    <p>$15.35</p>
+                    <form action="thankyou.html" method="get">
+                        <label for="qtyI">Qty:</label>
+                        <input type="number" id="qtyI" name="qty" value="-" min="0" max="100" style="width:50px;"><br>
+                        <input type="hidden" name="product" value="Medicube Zero Pore Blackhead Mud Purifying Face Mask with Clay 100mol">
+                        <input type="hidden" name="price" value="15.35">
+                        <button class="add-cart-btn" type="submit" style="margin-top:10px;">Add to Cart</button>
+                    </form>
+                </div>
+
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 K-Beauty Store.</p>
+    </footer>
+     <script>
+        function toggleMenu() {
+            var menu = document.getElementById('mainMenu');
+            if (menu.style.display === "flex" || menu.style.display === "") {
+                menu.style.display = "none";
+            } else {
+                menu.style.display = "flex";
+                menu.style.flexDirection = "column";
+                menu.style.background = "#fff";
+                menu.style.position = "absolute";
+                menu.style.top = "60px";
+                menu.style.left = "0";
+                menu.style.width = "100%";
+                menu.style.boxShadow = "0 2px 8px rgba(0,0,0,0.08)";
+                menu.style.zIndex = "100";
+            }
+        }
+        function handleResize() {
+            var menu = document.getElementById('mainMenu');
+            if (window.innerWidth > 900) {
+                menu.style.display = "flex";
+                menu.style.flexDirection = "row";
+                menu.style.position = "static";
+                menu.style.background = "none";
+                menu.style.width = "auto";
+                menu.style.boxShadow = "none";
+            } else {
+                menu.style.display = "none";
+            }
+        }
+        window.addEventListener('resize', handleResize);
+        window.addEventListener('DOMContentLoaded', handleResize);
+    </script>
+</body>
+</html>
